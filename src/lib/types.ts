@@ -1,14 +1,21 @@
 export interface PokemonData {
-  pokemon: {
-    name: string
-    maxHP: number
-    maxCP: number
-    image: string
-    attacks: {
-      special: {
+  id: string
+  name: string
+  image: string
+  number: string
+  maxCP: number
+  classification: string
+  fleeRate: number
+  attacks: {
+    fast: [
+      {
         name: string
-        damage: number
-      }[]
-    }
+      }
+    ]
+    special: [
+      {
+        name: string
+      }
+    ]
   }
 }

@@ -1,28 +1,31 @@
-import React from 'react'
 import { useQuery } from '@apollo/client'
-import { Pokemon } from '../components/Pokemon'
 import { GET_POKEMONS } from '../graphql/get-pokemons'
+import { PokemonCard } from './PokemonCard'
+import { PokemonData } from '@/lib/types'
+import Feedback from './Feedback'
 
-interface PokemonContainerProps {}
-
-const PokemonContainer: React.FC<PokemonContainerProps> = () => {
+/*
+ * This component is responsible for fetching the pokemons and displaying them in a responsive grid
+ */
+const PokemonContainer = () => {
   const { loading, error, data } = useQuery(GET_POKEMONS, {
-    variables: { first: 5 }
+    variables: { first: 9 }
   })
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
-
-  const pokemons = data?.pokemons || []
+  const pokemons = (data?.pokemons as PokemonData[]) || []
 
   return (
-    <div className="container">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      {pokemons &&
-        pokemons.map((pokemon: any) => (
-          // TODO: Deejay fix the types here REMOVE anyy"
-          <Pokemon key={pokemon.id} pokemon={pokemon} />
-        ))}
+    <div className="container py-10">
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-slate-200 text-center">
+        🎮 GraphQL Demo
+      </h1>
+      <Feedback loading={loading} error={error} />
+      <div className="grid grid-cols-1  lg:grid-cols-2 xl:grid-cols-3 ">
+        {pokemons.length &&
+          pokemons.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          ))}
+      </div>
     </div>
   )
 }
